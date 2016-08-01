@@ -22,3 +22,17 @@ class DatabaseMongo:
         path = "mongodb://" + host + ":" + port
         self.client = MongoClient(path)
         self.db = self.client[database]
+
+    def put(self, key, data):
+        """Insert or replace an object into the database for a given key."""
+        # TODO: Clean this up, inserting one and deleting the rest is
+        #       definitely a sledgehammer approach
+        result = self.db[key].insert_one(data)
+        newid = result.inserted_id
+        result = db.restaurants.delete_many({"_id": {"$ne": newid}})
+
+    def get(self, key):
+        """Get a document from the database for a given key."""
+        cursor = self.db[key].find().sort({_id:1}).limit(1)
+        for document in cursor:
+            return document
