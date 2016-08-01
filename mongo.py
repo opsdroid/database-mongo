@@ -16,7 +16,7 @@ class DatabaseMongo:
     def connect(self):
         """Connect to the database."""
         host = self.config["host"] if "host" in self.config else "localhost"
-        port = self.config["port"] if "port" in self.config else "27019"
+        port = self.config["port"] if "port" in self.config else "27017"
         database = self.config["database"] \
             if "database" in self.config else "opsdroid"
         path = "mongodb://" + host + ":" + port
