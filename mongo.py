@@ -29,7 +29,7 @@ class DatabaseMongo:
         #       definitely a sledgehammer approach
         result = self.db[key].insert_one(data)
         newid = result.inserted_id
-        result = db.restaurants.delete_many({"_id": {"$ne": newid}})
+        result = self.db[key].delete_many({"_id": {"$ne": newid}})
 
     def get(self, key):
         """Get a document from the database for a given key."""
