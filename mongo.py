@@ -33,6 +33,7 @@ class DatabaseMongo:
 
     def get(self, key):
         """Get a document from the database for a given key."""
-        cursor = self.db[key].find().sort({"_id":1}).limit(1)
+        cursor = \
+            self.db[key].find({$query: {}, $orderby: {$natural : -1}}).limit(1)
         for document in cursor:
             return document
