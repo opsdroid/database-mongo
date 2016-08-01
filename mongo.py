@@ -25,11 +25,10 @@ class DatabaseMongo:
 
     def put(self, key, data):
         """Insert or replace an object into the database for a given key."""
-        # TODO: Clean this up, inserting one and deleting the rest is
-        #       definitely a sledgehammer approach
-        result = self.db[key].insert_one(data)
-        newid = result.inserted_id
-        result = self.db[key].delete_many({"_id": {"$ne": newid}})
+        if "_id" in data:
+            self.db[key].update_one({"_id": data["_id"]}, {"$set": data})
+        else:
+            self.db[key].insert_one(data)
 
     def get(self, key):
         """Get a document from the database for a given key."""
