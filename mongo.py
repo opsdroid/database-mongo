@@ -1,8 +1,10 @@
 import logging
 from pymongo import MongoClient
 
+from opsdroid.database import Database
 
-class DatabaseMongo:
+
+class DatabaseMongo(Database):
     """A module for opsdroid to allow memory to persist in a mongo database."""
 
     def __init__(self, config):
