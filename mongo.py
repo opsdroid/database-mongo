@@ -15,7 +15,7 @@ class DatabaseMongo(Database):
         self.client = None
         self.db = None
 
-    async def connect(self):
+    async def connect(self, opsdroid):
         """Connect to the database."""
         host = self.config["host"] if "host" in self.config else "localhost"
         port = self.config["port"] if "port" in self.config else "27017"
@@ -24,6 +24,7 @@ class DatabaseMongo(Database):
         path = "mongodb://" + host + ":" + port
         self.client = AsyncIOMotorClient(path)
         self.db = self.client[database]
+        logging.info("Connected to mongo")
 
     async def put(self, key, data):
         """Insert or replace an object into the database for a given key."""
