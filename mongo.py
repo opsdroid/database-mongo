@@ -35,8 +35,6 @@ class DatabaseMongo(Database):
 
     async def get(self, key):
         """Get a document from the database for a given key."""
-        cursor = self.db[key].find(
+        return self.db[key].find_one(
                         {"$query": {}, "$orderby": {"$natural" : -1}}
-                        ).limit(1)
-        for document in await cursor.to_list(length=1):
-            return document
+                        )
