@@ -35,6 +35,7 @@ class DatabaseMongo(Database):
 
     async def get(self, key):
         """Get a document from the database for a given key."""
+        logging.debug("Getting " + " from mongo")
         return self.db[key].find_one(
                         {"$query": {}, "$orderby": {"$natural" : -1}}
                         )
