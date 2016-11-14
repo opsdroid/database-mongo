@@ -28,6 +28,7 @@ class DatabaseMongo(Database):
 
     async def put(self, key, data):
         """Insert or replace an object into the database for a given key."""
+        logging.debug("Putting " + key + " into mongo")
         if "_id" in data:
             await self.db[key].update_one({"_id": data["_id"]}, {"$set": data})
         else:
@@ -36,6 +37,6 @@ class DatabaseMongo(Database):
     async def get(self, key):
         """Get a document from the database for a given key."""
         logging.debug("Getting " + key + " from mongo")
-        return self.db[key].find_one(
+        return await self.db[key].find_one(
                         {"$query": {}, "$orderby": {"$natural" : -1}}
                         )
