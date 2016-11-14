@@ -1,5 +1,5 @@
 import logging
-from pymongo import MongoClient
+from motor.motor_asyncio import AsyncIOMotorClient
 
 from opsdroid.database import Database
 
@@ -15,27 +15,27 @@ class DatabaseMongo(Database):
         self.client = None
         self.db = None
 
-    def connect(self):
+    async def connect(self):
         """Connect to the database."""
         host = self.config["host"] if "host" in self.config else "localhost"
         port = self.config["port"] if "port" in self.config else "27017"
         database = self.config["database"] \
             if "database" in self.config else "opsdroid"
         path = "mongodb://" + host + ":" + port
-        self.client = MongoClient(path)
+        self.client = AsyncIOMotorClient(path)
         self.db = self.client[database]
 
-    def put(self, key, data):
+    async def put(self, key, data):
         """Insert or replace an object into the database for a given key."""
         if "_id" in data:
-            self.db[key].update_one({"_id": data["_id"]}, {"$set": data})
+            await self.db[key].update_one({"_id": data["_id"]}, {"$set": data})
         else:
-            self.db[key].insert_one(data)
+            await self.db[key].insert_one(data)
 
-    def get(self, key):
+    async def get(self, key):
         """Get a document from the database for a given key."""
         cursor = self.db[key].find(
                         {"$query": {}, "$orderby": {"$natural" : -1}}
                         ).limit(1)
-        for document in cursor:
+        for document in await cursor:
             return document
