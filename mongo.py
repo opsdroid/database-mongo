@@ -38,5 +38,5 @@ class DatabaseMongo(Database):
         cursor = self.db[key].find(
                         {"$query": {}, "$orderby": {"$natural" : -1}}
                         ).limit(1)
-        for document in await cursor:
+        for document in await cursor.to_list(length=1):
             return document
