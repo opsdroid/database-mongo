@@ -15,7 +15,3 @@ databases:
     port:       "12345"       # (optional) default "27017"
     database:   "mydatabase"  # (optional) default "opsdroid"
 ```
-
-## License
-
-GNU General Public License Version 3 (GPLv3)
